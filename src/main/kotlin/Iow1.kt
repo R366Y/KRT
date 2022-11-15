@@ -1,12 +1,13 @@
 import inoneweekend.Color
 import inoneweekend.writeColor
 import java.io.File
-import kotlin.math.round
 
-const val imageWidth = 256
-const val imageHeight = 256
+
 
 fun main() {
+    val imageWidth = 256
+    val imageHeight = 256
+
     var image = ""
     val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
     image += ppmHeader
