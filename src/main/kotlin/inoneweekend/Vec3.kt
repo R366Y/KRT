@@ -28,11 +28,11 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
         z /= v.z
     }
 
-    operator fun plus(v: Vec3) = Vec3(x + v.x, y + v.y, z + v.z)
-    operator fun minus(v: Vec3) = Vec3(x - v.x, y - v.y, z - v.z)
-    operator fun times(v: Vec3) = Vec3(x * v.x, y * v.y, z * v.z)
-    operator fun times(t: Double) = Vec3(t * x, t * y, t * z)
-    operator fun div(t: Double) = Vec3(x, y, z) * (1 / t)
+    operator fun plus(v: Vec3):Vec3 = Vec3(x + v.x, y + v.y, z + v.z)
+    operator fun minus(v: Vec3):Vec3 = Vec3(x - v.x, y - v.y, z - v.z)
+    operator fun times(v: Vec3):Vec3 = Vec3(x * v.x, y * v.y, z * v.z)
+    operator fun times(t: Double):Vec3 = Vec3(t * x, t * y, t * z)
+    operator fun div(t: Double):Vec3 = Vec3(x, y, z) * (1 / t)
 
 
     fun lengthSquared(): Double {
@@ -62,7 +62,7 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
     }
 }
 
-operator fun Double.times(v: Vec3) = v * this
+operator fun Double.times(v: Vec3): Vec3 = v * this
 
 typealias Point3 = Vec3
 typealias Color = Vec3
