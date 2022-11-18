@@ -1,3 +1,5 @@
+package renders
+
 import inoneweekend.Color
 import inoneweekend.writeColor
 import java.io.File
