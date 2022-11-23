@@ -26,6 +26,6 @@ class Sphere(private val center: Point3, private val radius: Double): Hittable  
         val t = root
         val p = r.at(root)
         val normal = (p - center) / radius
-        return HitRecord(p, normal, t)
+        return HitRecord(p, normal, t, r)
     }
 }

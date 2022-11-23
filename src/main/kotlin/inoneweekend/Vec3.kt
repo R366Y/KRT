@@ -4,12 +4,6 @@ import kotlin.math.sqrt
 
 class Vec3(var x: Double, var y: Double, var z: Double) {
 
-    operator fun unaryMinus() {
-        x = -x
-        y = -y
-        z = -z
-    }
-
     operator fun plusAssign(v: Vec3) {
         x += v.x
         y += v.y
@@ -28,6 +22,7 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
         z /= v.z
     }
 
+    operator fun unaryMinus() = Vec3(-x, -y, -z)
     operator fun plus(v: Vec3) = Vec3(x + v.x, y + v.y, z + v.z)
     operator fun minus(v: Vec3) = Vec3(x - v.x, y - v.y, z - v.z)
     operator fun times(v: Vec3) = Vec3(x * v.x, y * v.y, z * v.z)
@@ -48,13 +43,15 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
     }
 
     infix fun cross(v: Vec3): Vec3 {
-        return Vec3(y * v.z - z * v.y,
-                    z * v.x - x * v.z,
-                    x * v.y - y * v.x)
+        return Vec3(
+            y * v.z - z * v.y,
+            z * v.x - x * v.z,
+            x * v.y - y * v.x
+        )
     }
 
     fun unitVector(): Vec3 {
-       return this / length()
+        return this / length()
     }
 
     override fun toString(): String {
