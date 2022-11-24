@@ -47,7 +47,7 @@ fun main() {
                 val u = (i + random.nextDouble()) / (imageWidth - 1)
                 val v = (j + random.nextDouble()) / (imageHeight - 1)
                 val r = camera.getRay(u, v)
-                pixelColor = pixelColor + rayColor(r, world)
+                pixelColor += rayColor(r, world)
             }
             image += writeColor(pixelColor, samplesPerPixel)
         }
