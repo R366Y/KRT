@@ -1,6 +1,7 @@
 package inoneweekend
 
 import kotlin.math.round
+import kotlin.math.sqrt
 
 fun writeColor(pixelColor: Color): String {
     val ir = (256 * pixelColor.x.coerceIn(0.0, 0.999)).toInt()
@@ -14,11 +15,11 @@ fun writeColor(pixelColor: Color, samplesPerPixel: Int): String {
     var g = pixelColor.y
     var b = pixelColor.z
 
-    // Divide color by the number of samples
+    // Divide color by the number of samples and gamma-correct for gamma=2.0
     val scale = 1.0 / samplesPerPixel
-    r *= scale
-    g *= scale
-    b *= scale
+    r = sqrt( scale * r)
+    g = sqrt(scale * g)
+    b = sqrt(scale * b)
 
     val ir = (256 * r.coerceIn(0.0, 0.999)).toInt()
     val ig = (256 * g.coerceIn(0.0, 0.999)).toInt()

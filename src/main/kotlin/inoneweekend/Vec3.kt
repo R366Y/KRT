@@ -54,6 +54,16 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
     }
 }
 
+fun random(): Vec3 = Vec3(randomDouble(), randomDouble(), randomDouble())
+fun random(min: Double, max: Double) = Vec3(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max))
+fun randomInUnitSphere(): Vec3 {
+    while (true) {
+        val p = random(-1.0, 1.0)
+        if (p.lengthSquared() >= 1) continue;
+        return p;
+    }
+}
+
 operator fun Double.times(v: Vec3): Vec3 = v * this
 
 typealias Point3 = Vec3
