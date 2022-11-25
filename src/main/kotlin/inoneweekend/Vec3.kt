@@ -84,6 +84,10 @@ fun randomInHemisphere(normal: Vec3): Vec3 {
     }
 }
 
+fun reflect(v: Vec3, n: Vec3): Vec3 {
+    return v - 2 * (v dot n) * n
+}
+
 operator fun Double.times(v: Vec3): Vec3 = v * this
 
 typealias Point3 = Vec3
