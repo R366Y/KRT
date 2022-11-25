@@ -2,7 +2,7 @@ package inoneweekend
 
 import kotlin.math.sqrt
 
-class Sphere(private val center: Point3, private val radius: Double): Hittable  {
+class Sphere(private val center: Point3, private val radius: Double, private val material: Material? = null): Hittable  {
 
     override fun hit(r: Ray, tMin: Double, tMax: Double): HitRecord? {
         val oc = r.origin - center
@@ -26,6 +26,6 @@ class Sphere(private val center: Point3, private val radius: Double): Hittable  
         val t = root
         val p = r.at(root)
         val normal = (p - center) / radius
-        return HitRecord(p, normal, t, r)
+        return HitRecord(p, normal, t, r, material)
     }
 }

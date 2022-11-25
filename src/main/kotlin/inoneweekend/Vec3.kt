@@ -1,5 +1,6 @@
 package inoneweekend
 
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 class Vec3(var x: Double, var y: Double, var z: Double) {
@@ -49,18 +50,37 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
         return this / length()
     }
 
+    fun nearZero(): Boolean {
+        // Return true if the vector is close to zero in all dimensions
+        val s = 1e-8
+        return (abs(x) < s) && (abs(y) < s) && (abs(z) < s)
+    }
+
     override fun toString(): String {
         return "[$x, $y, $z]"
     }
 }
 
 fun random(): Vec3 = Vec3(randomDouble(), randomDouble(), randomDouble())
+
 fun random(min: Double, max: Double) = Vec3(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max))
+
 fun randomInUnitSphere(): Vec3 {
     while (true) {
         val p = random(-1.0, 1.0)
         if (p.lengthSquared() >= 1) continue;
         return p;
+    }
+}
+
+fun randomUnitVector(): Vec3 = randomInUnitSphere().unitVector()
+
+fun randomInHemisphere(normal: Vec3): Vec3 {
+    val inUnitSphere = randomInUnitSphere()
+    return if ((inUnitSphere dot normal) > 0.0) { // In the same hemisphere as the normal
+        inUnitSphere
+    } else {
+        -inUnitSphere
     }
 }
 
