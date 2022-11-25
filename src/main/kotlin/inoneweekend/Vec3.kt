@@ -1,6 +1,7 @@
 package inoneweekend
 
 import kotlin.math.abs
+import kotlin.math.min
 import kotlin.math.sqrt
 
 class Vec3(var x: Double, var y: Double, var z: Double) {
@@ -86,6 +87,13 @@ fun randomInHemisphere(normal: Vec3): Vec3 {
 
 fun reflect(v: Vec3, n: Vec3): Vec3 {
     return v - 2 * (v dot n) * n
+}
+
+fun refract(uv: Vec3, n: Vec3, etaiOverEtat: Double): Vec3 {
+    val cosTheta = min(-uv dot n, 1.0)
+    val rOutPerp = etaiOverEtat * (uv + cosTheta * n)
+    val rOutParallel = -sqrt(abs(1.0 - rOutPerp.lengthSquared())) * n
+    return rOutPerp + rOutParallel
 }
 
 operator fun Double.times(v: Vec3): Vec3 = v * this
