@@ -86,6 +86,11 @@
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>1.7.21</version>
         </dependency>
+        <dependency>
+            <groupId>com.sksamuel.scrimage</groupId>
+            <artifactId>scrimage-core</artifactId>
+            <version>4.0.32</version>
+        </dependency>
     </dependencies>
 
 </project>
