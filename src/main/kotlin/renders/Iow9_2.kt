@@ -3,6 +3,10 @@ package renders
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.PngWriter
 import inoneweekend.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.random.Random
 
@@ -33,7 +37,7 @@ fun main() {
     val aspectRatio = 16.0 / 9.0
     val imageWidth = 400
     val imageHeight = (imageWidth / aspectRatio).toInt()
-    val samplesPerPixel = 100
+    val samplesPerPixel = 500
     val maxDepth = 50
 
     // World
@@ -57,15 +61,21 @@ fun main() {
 
     for (j in imageHeight - 1 downTo 0) {
         System.err.print("\rScalines remaining: $j ")
-        for (i in 0 until imageWidth) {
-            var pixelColor = Color(0.0, 0.0, 0.0)
-            for (s in 0 until samplesPerPixel) {
-                val u = (i + random.nextDouble()) / (imageWidth - 1)
-                val v = (j + random.nextDouble()) / (imageHeight - 1)
-                val r = camera.getRay(u, v)
-                pixelColor += rayColor(r, world, maxDepth)
+        runBlocking {
+            withContext(Dispatchers.Default) {
+                for (i in 0 until imageWidth) {
+                    launch {
+                        var pixelColor = Color(0.0, 0.0, 0.0)
+                        for (s in 0 until samplesPerPixel) {
+                            val u = (i + random.nextDouble()) / (imageWidth - 1)
+                            val v = (j + random.nextDouble()) / (imageHeight - 1)
+                            val r = camera.getRay(u, v)
+                            pixelColor += rayColor(r, world, maxDepth)
+                        }
+                        writeColor(image, i, j, pixelColor, samplesPerPixel)
+                    }
+                }
             }
-            writeColor(image, i, j, pixelColor, samplesPerPixel)
         }
     }
     image = image.flipY()

@@ -1,6 +1,12 @@
 package renders
 
+import com.sksamuel.scrimage.ImmutableImage
+import com.sksamuel.scrimage.nio.PngWriter
 import inoneweekend.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.random.Random
 
@@ -15,9 +21,9 @@ fun randomScene(): Hittable {
             val choseMat = randomDouble()
             val center = Point3(a + 0.9 * randomDouble(), 0.2, b + 0.9 * randomDouble())
 
-            if((center - Point3(4.0, 0.2, 0.0)).length() > 0.9) {
+            if ((center - Point3(4.0, 0.2, 0.0)).length() > 0.9) {
 
-                val sphereMaterial: Material = if(choseMat < 0.8) {
+                val sphereMaterial: Material = if (choseMat < 0.8) {
                     // diffuse
                     val albedo = randomVector() * randomVector()
                     Lambertian(albedo)
@@ -70,7 +76,7 @@ fun main() {
 
     // Image
     val aspectRatio = 3.0 / 2.0
-    val imageWidth = 600
+    val imageWidth = 800
     val imageHeight = (imageWidth / aspectRatio).toInt()
     val samplesPerPixel = 200
     val maxDepth = 20
@@ -87,23 +93,28 @@ fun main() {
     val camera = CameraWithFocus(lookFrom, lookAt, vUp, 20.0, aspectRatio, aperture, distToFocus)
 
     // Render
-    var image = ""
-    val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
-    image += ppmHeader
+    // Render
+    var image = ImmutableImage.create(imageWidth, imageHeight)
 
     for (j in imageHeight - 1 downTo 0) {
         System.err.print("\rScalines remaining: $j ")
-        for (i in 0 until imageWidth) {
-            var pixelColor = Color(0.0, 0.0, 0.0)
-            for (s in 0 until samplesPerPixel) {
-                val u = (i + random.nextDouble()) / (imageWidth - 1)
-                val v = (j + random.nextDouble()) / (imageHeight - 1)
-                val r = camera.getRay(u, v)
-                pixelColor += rayColor(r, world, maxDepth)
+        runBlocking {
+            withContext(Dispatchers.Default) {
+                for (i in 0 until imageWidth) {
+                    launch {
+                        var pixelColor = Color(0.0, 0.0, 0.0)
+                        for (s in 0 until samplesPerPixel) {
+                            val u = (i + random.nextDouble()) / (imageWidth - 1)
+                            val v = (j + random.nextDouble()) / (imageHeight - 1)
+                            val r = camera.getRay(u, v)
+                            pixelColor += rayColor(r, world, maxDepth)
+                        }
+                        writeColor(image, i, j, pixelColor, samplesPerPixel)
+                    }
+                }
             }
-            image += writeColor(pixelColor, samplesPerPixel)
         }
     }
-    File("final_render.ppm").delete()
-    File("final_render.ppm").appendText(image)
+    image = image.flipY()
+    image.output(PngWriter.NoCompression, File("final_render.png"))
 }
