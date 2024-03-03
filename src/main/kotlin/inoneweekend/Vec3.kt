@@ -64,13 +64,14 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
 
 fun randomVector(): Vec3 = Vec3(randomDouble(), randomDouble(), randomDouble())
 
-fun randomVector(min: Double, max: Double) = Vec3(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max))
+fun randomVector(min: Double, max: Double) =
+    Vec3(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max))
 
 fun randomInUnitSphere(): Vec3 {
     while (true) {
         val p = randomVector(-1.0, 1.0)
-        if (p.lengthSquared() >= 1) continue;
-        return p;
+        if (p.lengthSquared() >= 1) continue
+        return p
     }
 }
 

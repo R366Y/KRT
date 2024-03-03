@@ -2,7 +2,6 @@ package inoneweekend
 
 import com.sksamuel.scrimage.MutableImage
 import com.sksamuel.scrimage.color.RGBColor
-import kotlin.math.round
 import kotlin.math.sqrt
 
 fun writeColor(pixelColor: Color): String {
@@ -19,7 +18,7 @@ fun writeColor(pixelColor: Color, samplesPerPixel: Int): String {
 
     // Divide color by the number of samples and gamma-correct for gamma=2.0
     val scale = 1.0 / samplesPerPixel
-    r = sqrt( scale * r)
+    r = sqrt(scale * r)
     g = sqrt(scale * g)
     b = sqrt(scale * b)
 
@@ -29,14 +28,14 @@ fun writeColor(pixelColor: Color, samplesPerPixel: Int): String {
     return "$ir $ig $ib\n"
 }
 
-fun writeColor(image: MutableImage, x:Int, y: Int, pixelColor: Color, samplesPerPixel: Int) {
+fun writeColor(image: MutableImage, x: Int, y: Int, pixelColor: Color, samplesPerPixel: Int) {
     var r = pixelColor.x
     var g = pixelColor.y
     var b = pixelColor.z
 
     // Divide color by the number of samples and gamma-correct for gamma=2.0
     val scale = 1.0 / samplesPerPixel
-    r = sqrt( scale * r)
+    r = sqrt(scale * r)
     g = sqrt(scale * g)
     b = sqrt(scale * b)
 

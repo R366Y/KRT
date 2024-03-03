@@ -2,7 +2,6 @@ package renders
 
 import inoneweekend.*
 import java.io.File
-import kotlin.math.sqrt
 
 
 fun main() {
@@ -38,19 +37,20 @@ fun main() {
     val lowerLeftCorner = origin - horizontal / 2.0 - vertical / 2.0 - Vec3(0.0, 0.0, focalLength)
 
     // Render
-    var image = ""
-    val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
-    image += ppmHeader
+    val image = buildString {
+        val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
+        append(ppmHeader)
 
-    for (j in imageHeight - 1 downTo 0) {
-        System.err.print("\rScalines remaining: $j ")
-        for (i in 0 until imageWidth) {
-            val u = i.toDouble() / (imageWidth - 1)
-            val v = j.toDouble() / (imageHeight - 1)
-            val r = Ray(origin, lowerLeftCorner + u * horizontal + v * vertical - origin)
-            val pixelColor = rayColor(r, world)
-            val s = writeColor(pixelColor)
-            image += s
+        for (j in imageHeight - 1 downTo 0) {
+            System.err.print("\rScalines remaining: $j ")
+            for (i in 0 until imageWidth) {
+                val u = i.toDouble() / (imageWidth - 1)
+                val v = j.toDouble() / (imageHeight - 1)
+                val r = Ray(origin, lowerLeftCorner + u * horizontal + v * vertical - origin)
+                val pixelColor = rayColor(r, world)
+                val s = writeColor(pixelColor)
+                append(s)
+            }
         }
     }
     File("image5.ppm").delete()

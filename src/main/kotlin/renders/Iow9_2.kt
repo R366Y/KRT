@@ -60,7 +60,7 @@ fun main() {
     var image = ImmutableImage.create(imageWidth, imageHeight)
 
     for (j in imageHeight - 1 downTo 0) {
-        System.err.print("\rScalines remaining: $j ")
+        System.err.print("\rScanlines remaining: $j ")
         runBlocking {
             withContext(Dispatchers.Default) {
                 for (i in 0 until imageWidth) {

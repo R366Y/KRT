@@ -2,7 +2,6 @@ package renders
 
 import inoneweekend.*
 import java.io.File
-import kotlin.math.sqrt
 import kotlin.random.Random
 
 
@@ -12,8 +11,8 @@ fun main() {
 
     fun rayColor(r: Ray, world: Hittable, depth: Int): Color {
         // If we've exceeded the ray bounce limit, no more light is gathered
-        if(depth <= 0)
-            return Color(0.0,0.0,0.0)
+        if (depth <= 0)
+            return Color(0.0, 0.0, 0.0)
 
         val h = world.hit(r, 0.001, infinity)
         if (h != null) {
@@ -41,21 +40,22 @@ fun main() {
     val camera = Camera()
 
     // Render
-    var image = ""
-    val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
-    image += ppmHeader
+    val image = buildString {
+        val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
+        append(ppmHeader)
 
-    for (j in imageHeight - 1 downTo 0) {
-        System.err.print("\rScalines remaining: $j ")
-        for (i in 0 until imageWidth) {
-            var pixelColor = Color(0.0, 0.0, 0.0)
-            for(s in 0 until  samplesPerPixel){
-                val u = (i + random.nextDouble()) / (imageWidth - 1)
-                val v = (j + random.nextDouble()) / (imageHeight - 1)
-                val r = camera.getRay(u, v)
-                pixelColor += rayColor(r, world, 50)
+        for (j in imageHeight - 1 downTo 0) {
+            System.err.print("\rScalines remaining: $j ")
+            for (i in 0 until imageWidth) {
+                var pixelColor = Color(0.0, 0.0, 0.0)
+                for (s in 0 until samplesPerPixel) {
+                    val u = (i + random.nextDouble()) / (imageWidth - 1)
+                    val v = (j + random.nextDouble()) / (imageHeight - 1)
+                    val r = camera.getRay(u, v)
+                    pixelColor += rayColor(r, world, 50)
+                }
+                append(writeColor(pixelColor, samplesPerPixel))
             }
-            image += writeColor(pixelColor, samplesPerPixel)
         }
     }
     File("image7.ppm").delete()

@@ -1,9 +1,7 @@
 package renders
 
 import inoneweekend.*
-import java.awt.Point
 import java.io.File
-import kotlin.math.cos
 import kotlin.random.Random
 
 
@@ -31,7 +29,7 @@ fun main() {
 
     // Image
     val aspectRatio = 16.0 / 9.0
-    val imageWidth = 400
+    val imageWidth = 800
     val imageHeight = (imageWidth / aspectRatio).toInt()
     val samplesPerPixel = 100
     val maxDepth = 50
@@ -54,21 +52,22 @@ fun main() {
     val camera = Camera(Point3(-2.0, 2.0, 1.0), Point3(0.0, 0.0,-1.0), vfov = 20.0, aspectRatio = aspectRatio)
 
     // Render
-    var image = ""
-    val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
-    image += ppmHeader
+    val image = buildString {
+        val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
+        append(ppmHeader)
 
-    for (j in imageHeight - 1 downTo 0) {
-        System.err.print("\rScalines remaining: $j ")
-        for (i in 0 until imageWidth) {
-            var pixelColor = Color(0.0, 0.0, 0.0)
-            for (s in 0 until samplesPerPixel) {
-                val u = (i + random.nextDouble()) / (imageWidth - 1)
-                val v = (j + random.nextDouble()) / (imageHeight - 1)
-                val r = camera.getRay(u, v)
-                pixelColor += rayColor(r, world, maxDepth)
+        for (j in imageHeight - 1 downTo 0) {
+            System.err.print("\rScalines remaining: $j ")
+            for (i in 0 until imageWidth) {
+                var pixelColor = Color(0.0, 0.0, 0.0)
+                for (s in 0 until samplesPerPixel) {
+                    val u = (i + random.nextDouble()) / (imageWidth - 1)
+                    val v = (j + random.nextDouble()) / (imageHeight - 1)
+                    val r = camera.getRay(u, v)
+                    pixelColor += rayColor(r, world, maxDepth)
+                }
+                append(writeColor(pixelColor, samplesPerPixel))
             }
-            image += writeColor(pixelColor, samplesPerPixel)
         }
     }
     File("image11.ppm").delete()
