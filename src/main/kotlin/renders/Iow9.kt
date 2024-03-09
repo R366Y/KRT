@@ -29,7 +29,7 @@ fun main() {
 
     // Image
     val aspectRatio = 16.0 / 9.0
-    val imageWidth = 400
+    val imageWidth = 800
     val imageHeight = (imageWidth / aspectRatio).toInt()
     val samplesPerPixel = 100
     val maxDepth = 50
@@ -69,6 +69,6 @@ fun main() {
             }
         }
     }
-    File("image9.ppm").delete()
-    File("image9.ppm").appendText(image)
+    File("images/image9.ppm").delete()
+    File("images/image9.ppm").appendText(image)
 }

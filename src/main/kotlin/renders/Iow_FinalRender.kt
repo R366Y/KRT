@@ -78,8 +78,8 @@ fun main() {
     val aspectRatio = 3.0 / 2.0
     val imageWidth = 800
     val imageHeight = (imageWidth / aspectRatio).toInt()
-    val samplesPerPixel = 200
-    val maxDepth = 20
+    val samplesPerPixel = 100
+    val maxDepth = 50
 
     // World
     val world = randomScene()
@@ -116,5 +116,5 @@ fun main() {
         }
     }
     image = image.flipY()
-    image.output(PngWriter.NoCompression, File("final_render.png"))
+    image.output(PngWriter.NoCompression, File("images/final_render.png"))
 }

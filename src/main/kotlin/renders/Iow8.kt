@@ -50,7 +50,7 @@ fun main() {
     val camera = Camera()
 
     // Render
-    var image = buildString {
+    val image = buildString {
         val ppmHeader = "P3\n$imageWidth $imageHeight\n255\n"
         append(ppmHeader)
 
@@ -62,12 +62,12 @@ fun main() {
                     val u = (i + random.nextDouble()) / (imageWidth - 1)
                     val v = (j + random.nextDouble()) / (imageHeight - 1)
                     val r = camera.getRay(u, v)
-                    pixelColor += rayColor(r, world, 50)
+                    pixelColor += rayColor(r, world, maxDepth)
                 }
                 append(writeColor(pixelColor, samplesPerPixel))
             }
         }
     }
-    File("image8.ppm").delete()
-    File("image8.ppm").appendText(image)
+    File("images/image8.ppm").delete()
+    File("images/image8.ppm").appendText(image)
 }

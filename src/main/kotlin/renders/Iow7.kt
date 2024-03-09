@@ -52,12 +52,12 @@ fun main() {
                     val u = (i + random.nextDouble()) / (imageWidth - 1)
                     val v = (j + random.nextDouble()) / (imageHeight - 1)
                     val r = camera.getRay(u, v)
-                    pixelColor += rayColor(r, world, 50)
+                    pixelColor += rayColor(r, world, maxDepth)
                 }
                 append(writeColor(pixelColor, samplesPerPixel))
             }
         }
     }
-    File("image7.ppm").delete()
-    File("image7.ppm").appendText(image)
+    File("images/image7.ppm").delete()
+    File("images/image7.ppm").appendText(image)
 }

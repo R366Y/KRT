@@ -67,6 +67,6 @@ fun main() {
             }
         }
     }
-    File("image10.ppm").delete()
-    File("image10.ppm").appendText(image)
+    File("images/image10.ppm").delete()
+    File("images/image10.ppm").appendText(image)
 }
